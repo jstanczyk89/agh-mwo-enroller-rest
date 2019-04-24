@@ -2,11 +2,6 @@ package com.company.enroller.persistence;
 
 import java.util.Collection;
 
-import javax.persistence.RollbackException;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.SystemException;
-
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
@@ -29,20 +24,20 @@ public class ParticipantService {
 		return (Participant) connector.getSession().get(Participant.class, login);
 	}
 	
-	public Participant add(Participant participant) throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	public Participant add(Participant participant){
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
 		connector.getSession().save(participant);
 		transaction.commit();
 		return participant;
 	}
 	
-	public void delete(Participant participant) throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	public void delete(Participant participant) {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
 		connector.getSession().delete(participant);
 		transaction.commit();
 	}
 	
-	public void update(Participant participant) throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	public void update(Participant participant)  {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
 		connector.getSession().merge(participant);
 		transaction.commit();

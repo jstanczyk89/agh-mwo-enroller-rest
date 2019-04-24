@@ -2,12 +2,6 @@ package com.company.enroller.controllers;
 
 import java.util.Collection;
 
-import javax.persistence.PersistenceException;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +37,7 @@ public class ParticipantRestController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant)
-			throws SecurityException, IllegalStateException, RollbackException, HeuristicMixedException,
-			HeuristicRollbackException, SystemException {
+	public ResponseEntity<?> registerParticipant(@RequestBody Participant participant){
 		Participant foundParticipant = participantService.findByLogin(participant.getLogin());
 		if (foundParticipant != null) {
 			return new ResponseEntity(
@@ -57,8 +49,7 @@ public class ParticipantRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> delete(@PathVariable("id") String login) throws PersistenceException, SecurityException,
-			IllegalStateException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	public ResponseEntity<?> delete(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -68,7 +59,7 @@ public class ParticipantRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> update(@PathVariable("id") String login, @RequestBody Participant updatedParticipant) throws PersistenceException, SecurityException, IllegalStateException, HeuristicMixedException, HeuristicRollbackException, SystemException {
+	public ResponseEntity<?> update(@PathVariable("id") String login, @RequestBody Participant updatedParticipant) {
 			 Participant participant = participantService.findByLogin(login);
 		     if (participant == null) {
 		         return new ResponseEntity(HttpStatus.NOT_FOUND);
