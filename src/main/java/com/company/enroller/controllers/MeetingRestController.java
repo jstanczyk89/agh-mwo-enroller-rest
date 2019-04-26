@@ -85,53 +85,53 @@ public class MeetingRestController {
 	public ResponseEntity<?> getMeetingParticipants(@PathVariable("id") long id) {
 		Meeting wantedMeeting = meetingService.findMeetingById(id);
 		if (wantedMeeting == null) {
-			return new ResponseEntity("Unable to find. A meeting with specified id doesn't exist.",
+			return new ResponseEntity("Unable to find. A meeting with  id doesn't exist.",
 					HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Collection<Participant>>(wantedMeeting.getAllParticipants(), HttpStatus.OK);
 	}
 	
-	// Need testing
+	//Tested + some "Clean Code" names
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteMeeting(@PathVariable("id") long id) {
-		Meeting meeting = meetingService.findMeetingById(id);
-		if (meeting == null) {
-			return new ResponseEntity("Unable to find. A meeting with id " + meeting.getId() + " doesn't exist.", HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> deleteThatMeeting(@PathVariable("id") long id) {
+		Meeting meetingForDeletion = meetingService.findMeetingById(id);
+		if (meetingForDeletion == null) {
+			return new ResponseEntity("Unable to find. A meeting with specified id doesn't exist.", HttpStatus.NOT_FOUND);
 		}
-		meetingService.deleteMeeting(meeting);
-		return new ResponseEntity<Meeting>(meeting, HttpStatus.NO_CONTENT);
+		meetingService.deleteThatMeeting(meetingForDeletion);
+		return new ResponseEntity<Meeting>(meetingForDeletion, HttpStatus.NO_CONTENT);
 	}
 	
-	// Need testing
+	//Tested + some "Clean Code" names
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateMeeting(@PathVariable("id") long id, @RequestBody Meeting updateMeeting) {
-			 Meeting meeting = meetingService.findMeetingById(id);
-		     if (meeting == null) {
-		         return new ResponseEntity("Unable to find. A meeting with id " + meeting.getId() + " doesn't exist.", HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> updateMeeting(@PathVariable("id") long id, @RequestBody Meeting meetingForUpdate) {
+			 Meeting meetingBeforeUpdate = meetingService.findMeetingById(id);
+		     if (meetingBeforeUpdate == null) {
+		         return new ResponseEntity("Unable to find. A meeting with id " + meetingForUpdate.getId() + " doesn't exist.", HttpStatus.NOT_FOUND);
 		     }
-		     meeting.setId(updateMeeting.getId());
-		     participantService.updateMeeting(meeting);
-		     return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+		     meetingForUpdate.setId(id);
+		     participantService.updateMeeting(meetingForUpdate);
+		     return new ResponseEntity<Meeting>(meetingForUpdate, HttpStatus.OK);
 	}
 	
-	// Need testing
+	// Tested + some "Clean Code" names
 	
 	@RequestMapping(value = "/{id}/participants/{participantLogin}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteParticipantFromMeeting(@PathVariable("id") long id,
 			@PathVariable("participantLogin") String login) {
-		Meeting meeting = meetingService.findMeetingById(id);
-		Participant participant = participantService.findParticipantByLogin(login); 
-		if (meeting == null) {
-			return new ResponseEntity("Unable to update. A meeting with id " + id + " does not exist.",
+		Meeting meetingForParticipantDeletion = meetingService.findMeetingById(id);
+		Participant participantForDelition = participantService.findParticipantByLogin(login); 
+		if (meetingForParticipantDeletion == null) {
+			return new ResponseEntity("Unable to update. A meeting with id specified doesn't exist.",
 					HttpStatus.NOT_FOUND);
-		} else if (participant == null) {
-			return new ResponseEntity("Unable to update. A participant with login " + login + " does not exist.",
+		} else if (participantForDelition == null) {
+			return new ResponseEntity("Unable to update. A participant with login specified doesn't exist.",
 					HttpStatus.NOT_FOUND);
 		} else {
-			meetingService.deleteParticipantFromMeeting(id, participant);
-			return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+			meetingService.deleteParticipantFromMeeting(id, participantForDelition);
+			return new ResponseEntity<Meeting>(meetingForParticipantDeletion, HttpStatus.OK);
 		}
 
 	}

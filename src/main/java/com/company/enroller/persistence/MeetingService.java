@@ -28,18 +28,18 @@ public class MeetingService {
 		return (Meeting) connector.getSession().get(Meeting.class, id);
 	}
 
-	public Meeting addNewMeeting(Meeting meeting) {
+	public Meeting addNewMeeting(Meeting newMeeting) {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
-		connector.getSession().save(meeting);
+		connector.getSession().save(newMeeting);
 		transaction.commit();
-		return meeting;
+		return newMeeting;
 	}
 
-	public void addParticipantToMeeting(long id, Participant participant) {
-		Meeting meeting = findMeetingById(id);
-		meeting.addParticipant(participant);
+	public void addParticipantToMeeting(long id, Participant newParticipantInTheMeeting) {
+		Meeting existingMeeting = findMeetingById(id);
+		existingMeeting.addParticipant(newParticipantInTheMeeting);
 		Transaction transaction = connector.getSession().beginTransaction();
-		connector.getSession().update(meeting);
+		connector.getSession().update(existingMeeting);
 		transaction.commit();
 	}
 
@@ -47,24 +47,26 @@ public class MeetingService {
 		return (Participant) connector.getSession().get(Participant.class, login);
 	}
 
-	public void deleteMeeting(Meeting meeting) {
+	public void deleteThatMeeting(Meeting meetingForDeletion) {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
-		connector.getSession().delete(meeting);
+		connector.getSession().delete(meetingForDeletion);
 		transaction.commit();
 	}
 
-	public void updateMeeting(Meeting meeting) {
+	public void updateMeeting(Meeting meetingForUpdate) {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
-		connector.getSession().merge(meeting);
+		connector.getSession().merge(meetingForUpdate);
 		transaction.commit();
 	}
 
-	public void deleteParticipantFromMeeting(long id, Participant participant) {
-		Meeting meeting = findMeetingById(id);
-		meeting.removeParticipant(participant);
+	public void deleteParticipantFromMeeting(long id, Participant participantForDelition) {
+		Meeting meetingForParticipantDeletion = findMeetingById(id);
+		meetingForParticipantDeletion.removeParticipant(participantForDelition);
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
-		connector.getSession().delete(participant);
+		connector.getSession().delete(participantForDelition);
 		transaction.commit();
 	}
+	
+	//Tested + some "Clean Code" names
 
 }
