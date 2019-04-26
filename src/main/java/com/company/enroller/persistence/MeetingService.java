@@ -18,32 +18,32 @@ public class MeetingService {
 		connector = DatabaseConnector.getInstance();
 	}
 
-	public Collection<Meeting> getAll() {
+	public Collection<Meeting> getEveryMeeting() {
 		String hql = "FROM Meeting";
 		Query query = connector.getSession().createQuery(hql);
 		return query.list();
 	}
 
-	public Meeting findById(long id) {
+	public Meeting findMeetingById(long id) {
 		return (Meeting) connector.getSession().get(Meeting.class, id);
 	}
 
-	public Meeting add(Meeting meeting) {
+	public Meeting addNewMeeting(Meeting meeting) {
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
 		connector.getSession().save(meeting);
 		transaction.commit();
 		return meeting;
 	}
 
-	public void addParticipant(Long id, Participant participant) {
-		Meeting meeting = findById(id);
+	public void addParticipantToMeeting(long id, Participant participant) {
+		Meeting meeting = findMeetingById(id);
 		meeting.addParticipant(participant);
 		Transaction transaction = connector.getSession().beginTransaction();
 		connector.getSession().update(meeting);
 		transaction.commit();
 	}
 
-	public Participant findByLogin(String login) {
+	public Participant findParticipantByLogin(String login) {
 		return (Participant) connector.getSession().get(Participant.class, login);
 	}
 
@@ -60,7 +60,7 @@ public class MeetingService {
 	}
 
 	public void deleteParticipantFromMeeting(long id, Participant participant) {
-		Meeting meeting = findById(id);
+		Meeting meeting = findMeetingById(id);
 		meeting.removeParticipant(participant);
 		Transaction transaction = (Transaction) connector.getSession().beginTransaction();
 		connector.getSession().delete(participant);

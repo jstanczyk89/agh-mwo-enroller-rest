@@ -20,7 +20,7 @@ public class ParticipantService {
 		return connector.getSession().createCriteria(Participant.class).list();
 	}
 
-	public Participant findByLogin(String login) {
+	public Participant findParticipantByLogin(String login) {
 		return (Participant) connector.getSession().get(Participant.class, login);
 	}
 	

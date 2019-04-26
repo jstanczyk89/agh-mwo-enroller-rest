@@ -80,7 +80,7 @@ public class Meeting {
 		this.participants.remove(participant);
 	}
 
-	public Collection<Participant> getParticipants() {
+	public Collection<Participant> getAllParticipants() {
 		return participants;
 	}
 
